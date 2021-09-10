@@ -4,112 +4,144 @@ import Menu from '../../components/menu'
 
 import { Container, Conteudo } from './styled'
 
+import Api from '../services/api';
+import { useEffect, useState } from 'react';
+const api = new Api();
+
 
 export default function Index() {
-    return (
-        <Container>
-            <Menu />
-            <Conteudo>
-                <Cabecalho />
-                <div class="body-right-box">
-                    <div class="new-student-box">
-                        
-                        <div class="text-new-student">
-                            <div class="bar-new-student"></div>
-                            <div class="text-new-student">Novo Aluno</div>
-                        </div>
 
-                        <div class="input-new-student"> 
-                            <div class="input-left">
-                                <div class="agp-input"> 
-                                    <div class="name-student"> Nome: </div>  
-                                    <div class="input"> <input /> </div>  
-                                </div> 
-                                <div class="agp-input">
-                                    <div class="number-student"> Chamada: </div>  
-                                    <div class="input"> <input /> </div> 
-                                </div>
-                            </div>
+const [alunos, SetAlunos]   = useState([]);
+const [nome, SetNome]       = useState('');
+const [chamada, SetChamada] = useState('');
+const [curso, SetCurso]     = useState('');
+const [turma, SetTurma]     = useState('');
+const [alt, SetAlt]         = useState(0);
 
-                            <div class="input-right">
-                                <div class="agp-input">
-                                    <div class="corse-student"> Curso: </div>  
-                                    <div class="input"> <input /> </div>  
-                                </div>
-                                <div class="agp-input">
-                                    <div class="class-student"> Turma: </div>  
-                                    <div class="input"> <input /> </div> 
-                                </div>
-                            </div>
-                            <div class="button-create"> <button> Cadastrar </button> </div>
-                        </div>
-                    </div>
 
-                    <div class="student-registered-box">
-                        <div class="row-bar"> 
-                            <div class="bar-new-student"> </div>
-                            <div class="text-registered-student"> Alunos Matriculados </div>
-                        </div>
-                    
-                        <table class ="table-user">
-                            <thead>
-                                <tr>
-                                    <th> ID </th>
-                                    <th> Nome </th>
-                                    <th> Chamada </th>
-                                    <th> Turma </th>
-                                    <th> Curso </th>
-                                    <th class="coluna-acao"> </th>
-                                    <th class="coluna-acao"> </th>
-                                </tr>
-                            </thead>
-                    
-                            <tbody>
-                                <tr>
-                                    <td> 1 </td>
-                                    <td> Fulao da Silva Sauro</td>
-                                    <td> 15 </td>
-                                    <td> InfoX </td>
-                                    <td> Informática </td>
-                                    <td> <button> <img src="/assets/images/edit.svg" alt="" /> </button> </td>
-                                    <td> <button> <img src="/assets/images/trash.svg" alt="" /> </button> </td>
-                                </tr>
+
+    async function listar (){
+        let r = await api.listar ();
+        console.log(r);
+        SetAlunos(r);
+    }
+
+    async function inserir (){
+
+        if(alt == 0 ){
+            await api.inserir (nome, chamada, curso, turma);
+            alert('inserido')
+        } else {
+            await api.alterar(alt, nome, chamada, curso, turma);
+            alert('alterado')
+        }
+
+        SetNome('')
+        SetChamada('')
+        SetCurso('')
+        SetTurma('')
+        SetAlt(0)
+
+        listar();
+    }
+
+    async function remover (id) {
+        await api.remover(id);
+        alert('removido')
+
+        listar();
+    }
+    
+    async function alterar (item) {
+        SetNome(item.nm_aluno)
+        SetChamada(item.nr_chamada)
+        SetCurso(item.nm_curso)
+        SetTurma(item.nm_turma)
+        SetAlt(item.id_matricula)
+
+
+    }
+
+    useEffect(() => {
+        listar();
+    },   [])
+
+
+        return (
+            <Container>
+                <Menu />
+                <Conteudo>
+                    <Cabecalho />
+                    <div class="body-right-box">
+                        <div class="new-student-box">
                             
-                                <tr class="linha-alternada">
-                                    <td> 1 </td>
-                                    <td> Fulao da Silva Sauro</td>
-                                    <td> 16 </td>
-                                    <td> InfoX </td>
-                                    <td> Informática </td>
-                                    <td> </td>
-                                    <td> </td>
-                                </tr>
+                            <div class="text-new-student">
+                                <div class="bar-new-student"></div>
+                                <div class="text-new-student">Novo Aluno</div>
+                            </div>
 
-                                <tr>
-                                    <td> 1 </td>
-                                    <td> Fulao da Silva Sauro</td>
-                                    <td> 17 </td>
-                                    <td> InfoX </td>
-                                    <td> Informática </td>
-                                    <td> </td>
-                                    <td> </td>
-                                </tr>
+                            <div class="input-new-student"> 
+                                <div class="input-left">
+                                    <div class="agp-input"> 
+                                        <div class="name-student"> Nome: </div>  
+                                        <div class="input" type="text" value={nome} onChange={e => SetNome(e.target.value)} > <input /> </div>  
+                                    </div> 
+                                    <div class="agp-input">
+                                        <div class="number-student"> Chamada: </div>  
+                                        <div class="input"> <input type="text" value={chamada} onChange={e => SetChamada(e.target.value)} /> </div> 
+                                    </div>
+                                </div>
 
-                                <tr class="linha-alternada">
-                                    <td> 1 </td>
-                                    <td> Fulao da Silva Sauro</td>
-                                    <td> 18 </td>
-                                    <td> InfoX </td>
-                                    <td> Informática </td>
-                                    <td> </td>
-                                    <td> </td>
-                                </tr>
-                                
-                            </tbody> 
-                        </table>
+                                <div class="input-right">
+                                    <div class="agp-input">
+                                        <div class="corse-student"> Curso: </div>  
+                                        <div class="input" type="text" value={curso} onChange={e => SetCurso(e.target.value)} > <input /> </div>  
+                                    </div>
+                                    <div class="agp-input">
+                                        <div class="class-student"> Turma: </div>  
+                                        <div class="input" type="text" value={turma} onChange={e => SetTurma(e.target.value)} > <input /> </div> 
+                                    </div>
+                                </div>
+                                <div class="button-create"> <button onClick={inserir}> Cadastrar </button> </div>
+                            </div>
+                        </div>
+
+                        <div class="student-registered-box">
+                            <div class="row-bar"> 
+                                <div class="bar-new-student"> </div>
+                                <div class="text-registered-student"> Alunos Matriculados </div>
+                            </div>
+                        
+                            <table class ="table-user">
+                                <thead>
+                                    <tr>
+                                        <th> ID </th>
+                                        <th> Nome </th>
+                                        <th> Chamada </th>
+                                        <th> Turma </th>
+                                        <th> Curso </th>
+                                        <th class="coluna-acao"> </th>
+                                        <th class="coluna-acao"> </th>
+                                    </tr>
+                                </thead>
+                        
+                                <tbody>
+                                    {alunos.map(item =>    
+                                        <tr>
+                                            <td> {item.id_matricula} </td>
+                                            <td> {item.nm_aluno != null && item.nm_aluno.length >= 20 ? item.nm_aluno.substr(0, 20) + "..." : item.nm_aluno} </td>
+                                            <td> {item.nr_chamada} </td>
+                                            <td> {item.nm_turma} </td>
+                                            <td> {item.nm_curso} </td>
+                                            <td> <button onClick={ () => alterar(item) }> <img src="/assets/images/edit.svg" alt="" /> </button> </td>
+                                            <td> <button onClick={ () => remover(item.id_matricula) }> <img src="/assets/images/trash.svg" alt="" /> </button> </td>
+                                        </tr>
+                                    )}
+                                </tbody> 
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </Conteudo>
-        </Container>
-    )
+                </Conteudo>
+            </Container>
+        )
 }
