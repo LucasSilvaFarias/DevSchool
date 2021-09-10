@@ -25,12 +25,17 @@ const [alt, SetAlt]         = useState(0);
 const loading               = useRef(null)
 
     async function listar (){
+        loading.current.continuousStart();
+
         let r = await api.listar ();
         console.log(r);
         SetAlunos(r);
+
+        loading.current.complete();
     }
 
     async function inserir (){
+        loading.current.continuousStart();
 
         if(alt == 0 ){
             await api.inserir (nome, chamada, curso, turma);
@@ -40,30 +45,37 @@ const loading               = useRef(null)
             toast.dark('alterado')
         }
 
-        SetNome('')
-        SetChamada('')
-        SetCurso('')
-        SetTurma('')
-        SetAlt(0)
-
+        limpar();
         listar();
+
+        loading.current.complete();
+    }
+
+    function limpar() {
+        SetNome('');
+        SetChamada('');
+        SetCurso('');
+        SetTurma('');
+        SetAlt(0);
     }
 
     async function remover (id) {
+        loading.current.continuousStart();
+
         await api.remover(id);
         toast.dark('removido')
 
         listar();
+
+        loading.current.complete();
     }
     
     async function alterar (item) {
-        SetNome(item.nm_aluno)
-        SetChamada(item.nr_chamada)
-        SetCurso(item.nm_curso)
-        SetTurma(item.nm_turma)
-        SetAlt(item.id_matricula)
-
-
+        SetNome(item.nm_aluno);
+        SetChamada(item.nr_chamada);
+        SetCurso(item.nm_curso);
+        SetTurma(item.nm_turma);
+        SetAlt(item.id_matricula);
     }
 
     useEffect(() => {
@@ -74,7 +86,7 @@ const loading               = useRef(null)
         return (
             <Container>
                 <ToastContainer />
-                <LoadingBar color='#f11946' ref={loading} />
+                <LoadingBar color='#EA10C7' ref={loading} />
                     <Menu />
                     <Conteudo>
                         <Cabecalho />
