@@ -46,7 +46,6 @@ const loading               = useRef(null)
         }
 
         limpar();
-        listar();
 
         loading.current.complete();
     }
