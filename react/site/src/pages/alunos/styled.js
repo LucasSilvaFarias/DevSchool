@@ -261,6 +261,16 @@ const Container = styled.div`
         width: .1em;
     }
 
+    .coluna-acao > button{
+        visibility: hidden;
+    }
+
+    tr:hover{
+        .coluna-acao > button{
+            visibility: visible;
+        }
+    }
+
     button {
         cursor: pointer;
     }
