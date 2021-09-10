@@ -16,12 +16,12 @@ const api = new Api();
 
 export default function Index() {
 
-const [alunos, SetAlunos]   = useState([]);
-const [nome, SetNome]       = useState('');
-const [chamada, SetChamada] = useState('');
-const [curso, SetCurso]     = useState('');
-const [turma, SetTurma]     = useState('');
-const [alt, SetAlt]         = useState(0);
+const [alunos, setAlunos]   = useState([]);
+const [nome, setNome]       = useState('');
+const [chamada, setChamada] = useState('');
+const [curso, setCurso]     = useState('');
+const [turma, setTurma]     = useState('');
+const [alt, setAlt]         = useState(0);
 const loading               = useRef(null)
 
     async function listar (){
@@ -29,7 +29,7 @@ const loading               = useRef(null)
 
         let r = await api.listar ();
         console.log(r);
-        SetAlunos(r);
+        setAlunos(r);
 
         loading.current.complete();
     }
@@ -45,17 +45,18 @@ const loading               = useRef(null)
             toast.dark('alterado')
         }
 
+        listar();
         limpar();
 
         loading.current.complete();
     }
 
     function limpar() {
-        SetNome('');
-        SetChamada('');
-        SetCurso('');
-        SetTurma('');
-        SetAlt(0);
+        setNome('')
+        setChamada('')
+        setCurso('')
+        setTurma('')
+        setAlt(0)
     }
 
     async function remover (id) {
@@ -70,11 +71,11 @@ const loading               = useRef(null)
     }
     
     async function alterar (item) {
-        SetNome(item.nm_aluno);
-        SetChamada(item.nr_chamada);
-        SetCurso(item.nm_curso);
-        SetTurma(item.nm_turma);
-        SetAlt(item.id_matricula);
+        setNome(item.nm_aluno)
+        setChamada(item.nr_chamada)
+        setCurso(item.nm_curso)
+        setTurma(item.nm_turma)
+        setAlt(item.id_matricula)
     }
 
     useEffect(() => {
@@ -101,22 +102,22 @@ const loading               = useRef(null)
                                     <div class="input-left">
                                         <div class="agp-input"> 
                                             <div class="name-student"> Nome: </div>  
-                                            <div class="input" type="text" value={nome} onChange={e => SetNome(e.target.value)} > <input /> </div>  
+                                            <div class="input" type="text" value={nome} onChange={e => setNome(e.target.value)} > <input /> </div>  
                                         </div> 
                                         <div class="agp-input">
                                             <div class="number-student"> Chamada: </div>  
-                                            <div class="input"> <input type="text" value={chamada} onChange={e => SetChamada(e.target.value)} /> </div> 
+                                            <div class="input"> <input type="text" value={chamada} onChange={e => setChamada(e.target.value)} /> </div> 
                                         </div>
                                     </div>
 
                                     <div class="input-right">
                                         <div class="agp-input">
                                             <div class="corse-student"> Curso: </div>  
-                                            <div class="input" type="text" value={curso} onChange={e => SetCurso(e.target.value)} > <input /> </div>  
+                                            <div class="input" type="text" value={curso} onChange={e => setCurso(e.target.value)} > <input /> </div>  
                                         </div>
                                         <div class="agp-input">
                                             <div class="class-student"> Turma: </div>  
-                                            <div class="input" type="text" value={turma} onChange={e => SetTurma(e.target.value)} > <input /> </div> 
+                                            <div class="input" type="text" value={turma} onChange={e => setTurma(e.target.value)} > <input /> </div> 
                                         </div>
                                     </div>
                                     <div class="button-create"> <button onClick={inserir}> Cadastrar </button> </div>
