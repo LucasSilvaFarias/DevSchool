@@ -40,14 +40,25 @@ let loading               = useRef(null);
     async function inserir (){
         loading.current.continuousStart();
 
-        if(alt == 0 ){
-            await api.inserir (nome, chamada, curso, turma);
-            toast.dark('inserido')
-        } else {
-            await api.alterar(alt, nome, chamada, curso, turma);
-            toast.dark('alterado')
-        }
-        
+        if(chamada > 0){
+            if(alt == 0 ){
+                let r = await api.inserir (nome, chamada, curso, turma); 
+                if(r.erro)
+                    toast.dark(r.erro)
+                else 
+                    toast.dark('inserido')
+            } else {
+                let r = await api.alterar(alt, nome, chamada, curso, turma);
+                if(r.erro)
+                    toast.dark(r.erro)
+                else
+                    toast.dark('alterado')
+            }
+        } else (
+            toast.dark('chamada negativa')
+        )
+
+
         setNome('');
         setChamada('');
         setCurso('');
@@ -62,8 +73,27 @@ let loading               = useRef(null);
     async function remover (id) {
         loading.current.continuousStart();
 
-        await api.remover(id);
-        toast.dark('removido')
+        confirmAlert({
+            title: 'Remover aluno',
+            message: `Tem certeza que quer remover o aluno ${id} ?`,
+            buttons: [
+                {
+                    label: 'Sim',
+                    onClick: async() => {
+                        let r = await api.remover(id);
+                        if(r.erro){
+                            toast.dark(`${r.erro}`);
+                        } else {
+                            toast.dark('removido')
+                            listar();
+                        }
+                    }
+                },
+                {
+                    label: 'não'
+                }
+            ]
+        })
 
         listar();
 
