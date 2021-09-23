@@ -41,7 +41,7 @@ let loading               = useRef(null);
         loading.current.continuousStart();
 
         if(chamada > 0){
-            if(alt == 0 ){
+            if(alt === 0 ){
                 let r = await api.inserir (nome, chamada, curso, turma); 
                 if(r.erro)
                     toast.dark(r.erro)
@@ -125,7 +125,7 @@ let loading               = useRef(null);
                                 
                                 <div class="text-new-student">
                                     <div class="bar-new-student"></div>
-                                    <div class="text-new-student"> {alt == 0 ? "Novo Aluno" : "Alterando Aluno " + alt } </div>
+                                    <div class="text-new-student"> {alt === 0 ? "Novo Aluno" : "Alterando Aluno " + alt } </div>
                                 </div>
 
                                 <div class="input-new-student"> 
@@ -150,7 +150,7 @@ let loading               = useRef(null);
                                             <input class="input" type="text" value={turma} onChange={e => setTurma(e.target.value)} />
                                         </div>
                                     </div>
-                                    <div class="button-create"> <button onClick={inserir}> {alt == 0 ? "Cadastrar" : "Alterar"} </button> </div>
+                                    <div class="button-create"> <button onClick={inserir}> {alt === 0 ? "Cadastrar" : "Alterar"} </button> </div>
                                 </div>
                             </div>
 
@@ -175,7 +175,7 @@ let loading               = useRef(null);
                             
                                     <tbody>
                                         {alunos.map((item, i) =>    
-                                            <tr className={i % 2 == 0 ? "linha-alternada" : ""}>
+                                            <tr className={i % 2 === 0 ? "linha-alternada" : ""}>
                                                 <td> {item.id_matricula} </td>
                                                 <td title={item.nm_aluno}> {item.nm_aluno != null && item.nm_aluno.length >= 20 ? item.nm_aluno.substr(0, 20) + "..." : item.nm_aluno} </td>
                                                 <td> {item.nr_chamada} </td>
